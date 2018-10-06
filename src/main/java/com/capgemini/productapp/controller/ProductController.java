@@ -1,5 +1,7 @@
 package com.capgemini.productapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import com.capgemini.productapp.service.ProductService;
 @RestController
 public class ProductController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+	
 	@Autowired
 	private ProductService productService;
 	
@@ -25,7 +30,7 @@ public class ProductController {
 	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
 		ResponseEntity<Product> responseEntity = 
 				new ResponseEntity<Product>(productService.addProduct(product), HttpStatus.OK);
-		
+		logger.info("Product added"+product);
 		return responseEntity;
 	}
 	
@@ -42,6 +47,8 @@ public class ProductController {
 		}		
 		return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
 	}
+	
+
 	
 	@GetMapping("/products/{productId}")
 	public ResponseEntity<Product> findProductById(@PathVariable int productId) {
